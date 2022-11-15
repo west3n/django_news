@@ -1,0 +1,42 @@
+{% extends 'flatpages/default.html' %}
+
+{% load custom_filters %}
+
+{% block title %}
+News
+{% endblock title %}
+
+{% block content %}
+
+<style>
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+table.center {
+  margin-left: auto;
+  margin-right: auto;
+}
+</style>
+
+  <h1>Количество новостей: {{news|length}}</h1>
+    <hr>
+    {% if news %}
+        <table class="center">
+            <tr>
+                <td><strong>Заголовок</strong></td>
+                <td><strong>Дата публикации</strong></td>
+                <td><strong>Описание</strong></td>
+            </tr>
+            {% for post in news %}
+            <tr>
+                <td> {{post.post_header|censor}}</td>
+                <td> {{post.post_date}}</td>
+                <td> {{post.post_text|truncatechars:20}}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <h2>Новостей нет!</h2>
+    {% endif %}
+    {% endblock content %}
