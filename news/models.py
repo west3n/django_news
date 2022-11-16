@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.urls import reverse
 
 article = "AR"
 news = "NW"
@@ -34,7 +35,7 @@ class Post(models.Model):
     post_type = models.CharField(max_length=2, choices=POST_TYPES, default=news)
     post_date = models.DateTimeField(auto_now_add=True)
     post_category = models.ManyToManyField(Category, through="PostCategory")
-    post_header = models.CharField(max_length=50)
+    post_header = models.CharField(max_length=90)
     post_text = models.TextField()
     post_rating = models.IntegerField(default=0)
 
@@ -49,6 +50,9 @@ class Post(models.Model):
     def dislike(self, amount=0):
         self.post_rating -= amount
         self.save()
+
+    def get_absolute_url(self):
+        return reverse('news_list')
 
 
 class PostCategory(models.Model):
