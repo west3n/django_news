@@ -3,7 +3,7 @@ from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.views.generic import (
     ListView, DetailView, CreateView, UpdateView, DeleteView)
-from .models import Post, CategorySubscribers
+from .models import Post, CategorySubscribers, Category
 from .forms import NewsForm, SubscribeForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import Group
@@ -13,7 +13,6 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from .filters import NewsFilter
 from dotenv import load_dotenv, find_dotenv
-from django.contrib.auth.models import User
 
 load_dotenv(find_dotenv())
 
@@ -24,7 +23,7 @@ def notify_category_subscribers(sender, instance, created=True, **kwargs):
         subject="You have new posts in subscriptions",
         message=Post.post_text[:50],
         from_email=os.environ.get('EMAIL')+'yandex.ru',
-        recipient_list=User.email
+        recipient_list=Category.category_subscribers
     )
 
 
